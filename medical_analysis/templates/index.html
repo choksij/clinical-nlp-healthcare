@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Document and Image Analysis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h1>Upload Medical Document or Image</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="document">Upload Medical Document (Image):</label>
+            <input type="file" name="document" class="form-control-file" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label for="image">Upload Medical Image (X-ray, MRI, etc.):</label>
+            <input type="file" name="image" class="form-control-file" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-primary">Analyze</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-danger mt-3">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% if ocr_text %}
+    <h2 class="mt-5">OCR Extracted Text:</h2>
+    <p>{{ ocr_text }}</p>
+    <h2>NLP Named Entities:</h2>
+    <ul>
+        {% for entity, label in entities %}
+        <li>{{ entity }} - {{ label }}</li>
+        {% endfor %}
+    </ul>
+    <h2>NLP Summary:</h2>
+    <p>{{ summary }}</p>
+    {% endif %}
+    
+    {% if image_result %}
+    <h2 class="mt-5">Image Analysis Result:</h2>
+    <p>{{ image_result }}</p>
+    {% endif %}
+</body>
+</html>
